@@ -42,7 +42,7 @@ $excludes[]="|^.dev.*$|i";
 $includes = array();
 $includes[] = "development.com";
 
-exec(sprintf("find %s -iname *_access.log", LOG_PATH), $files);
+exec(sprintf("find %s -iname *_access.log | grep -v dev", LOG_PATH), $files);
 
 asort($files);
 
