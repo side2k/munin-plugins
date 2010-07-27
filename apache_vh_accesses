@@ -44,6 +44,8 @@ $includes[] = "development.com";
 
 exec(sprintf("find %s -iname *_access.log", LOG_PATH), $files);
 
+asort($files);
+
 foreach ($files as $key=>$file) {
   foreach ($includes as $include) {
     if (strpos($file, $include)) {
