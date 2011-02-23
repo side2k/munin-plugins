@@ -34,6 +34,12 @@ define('ACCESS_LINES', 1000);
 // number of lines to start with in the error log
 define('ERROR_LINES', 100);
 
+// get env value
+$log_path = isset($_ENV["apache_vh_log_path"]) ? getenv("apache_vh_log_path") : LOG_PATH;
+$access_lines = isset($_ENV["apache_vh_access_lines"]) ? getenv("apache_vh_access_lines") : ACCESS_LINES;
+$error_lines = isset($_ENV["apache_vh_error_lines"]) ? getenv("apache_vh_error_lines") : ERROR_LINES;
+
+
 // $excludes is an array of urls to exclude. use it to exclude testing sites.
 $excludes = array();
 $excludes[]="|^.dev.*$|i";
@@ -42,7 +48,7 @@ $excludes[]="|^.dev.*$|i";
 $includes = array();
 $includes[] = "development.com";
 
-exec(sprintf("find %s -iname *_access.log | grep -v dev", LOG_PATH), $files);
+exec(sprintf("find %s -iname *_access.log | grep -v dev", $log_path), $files);
 
 asort($files);
 
@@ -74,8 +80,8 @@ if (isset($argv[1]) && $argv[1]=='config') {
    echo "graph_info This graph shows errors per request by virtual host\n";
 } else {
    foreach ($files as $file) {
-      $access_rate = calculate_rate($file, ACCESS_LINES);
-      $error_rate = calculate_rate(str_replace('access', 'error', $file), ERROR_LINES);
+      $access_rate = calculate_rate($file, $access_lines);
+      $error_rate = calculate_rate(str_replace('access', 'error', $file), $error_lines);
 #     echo hashname($file) . "_error.value " . $error_rate . "\n";
       if ($error_rate == 0 || $access_rate == 0) {
          $err_req = 0;
