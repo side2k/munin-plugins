@@ -1,7 +1,7 @@
 <?
 
 // path where the apache logs are to be found
-define('LOG_PATH', "/var/log/apache2/");
+define('LOG_PATH', "/var/log/apache2/vhosts/");
 
 // number of lines to start with in the access log - improving this may reduce the number of times it checks
 define('ACCESS_LINES', 1000);
