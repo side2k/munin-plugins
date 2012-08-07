@@ -1,7 +1,6 @@
 <?
-
 // path where the apache logs are to be found
-define('LOG_PATH', "/var/log/apache2/vhosts/");
+define('LOG_PATH', "/var/log/apache2/");
 
 // number of lines to start with in the access log - improving this may reduce the number of times it checks
 define('ACCESS_LINES', 1000);
@@ -14,7 +13,6 @@ $log_path = isset($_ENV["apache_vh_log_path"]) ? getenv("apache_vh_log_path") : 
 $access_lines = isset($_ENV["apache_vh_access_lines"]) ? getenv("apache_vh_access_lines") : ACCESS_LINES;
 $error_lines = isset($_ENV["apache_vh_error_lines"]) ? getenv("apache_vh_error_lines") : ERROR_LINES;
 
-
 // $excludes is an array of urls to exclude. use it to exclude testing sites.
 $excludes = array();
 $excludes[]="|^.dev.*$|i";
@@ -23,8 +21,7 @@ $excludes[]="|^.dev.*$|i";
 $includes = array();
 $includes[] = "development.com";
 
-exec(sprintf("find %s -iname '*_access.log' | grep -v dev", $log_path), $files);
-
+exec(sprintf("find %s -iname '*-access.log' | grep -v dev", $log_path), $files);
 asort($files);
 
 function get_time($file, $num_lines) {
